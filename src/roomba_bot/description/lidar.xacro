@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Creating the joint for LIDAR -->
+    <joint name="laser_joint" type="fixed">
+        <parent link="chassis_link"/>
+        <child link="laser_frame"/>
+        <origin xyz="0.17425 0.0 0.03347" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <!-- Adding LIDAR properties -->
+    <link name="laser_frame">
+        <visual>
+            <origin xyz="0.0 0.0 0.0588"/>
+            <geometry>
+                <cylinder radius="0.0343" length="0.0588" />
+            </geometry>
+            <material name="red" />
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="0.0343" length="0.0588" />
+            </geometry>
+        </collision>
+        <xacro:inertial_cylinder mass="0.5" length="0.0588" radius="0.0343">
+            <origin xyz="0 0 0" rpy="0.0 0.0 0.0" />
+        </xacro:inertial_cylinder>
+    </link>
+    <gazebo reference="laser_frame">
+        <material>Gazebo/Red</material>
+        <!-- Creating a sensor with the name laser and the type ray -->
+        <sensor name="laser" type="ray">
+            <!-- Here we are adding the starting position as the origin and no initial rotation -->
+            <pose> 0 0 0 0 0 0 </pose>
+            <!-- This is where the graphical representation of the sensor is enabled, which corresponds to a virtual light beam, starting from the LIDAR and interacting with objects in the world -->
+            <visualize>true</visualize>
+            <!-- Here you set the sensor update rate to 10 times per second -->
+            <update_rate>10</update_rate>
+            <ray>
+                <!-- Here you add sensor properties to the Gazebo -->
+                <scan>
+                    <horizontal> <!-- This indicates that the laser is propagating horizontally -->
+                        <samples>360</samples> <!-- Here you define the number of points (samples) that the sensor will pick up -->
+                        <min_angle>-3.14</min_angle>
+                        <max_angle>3.14</max_angle>
+                    </horizontal>
+                </scan>
+                <range> <!-- We will now describe the sensor's reading characteristics -->
+                    <min>0.3</min> <!-- Minimum detection distance -->
+                    <max>12</max> <!-- Maximum detection distance -->
+                </range>
+            </ray>
+            <!-- Here we create a plugin, which is responsible for picking up the sensor outputs, connecting the information from the Gazebo to other systems, in this case ROS -->
+            <plugin name="laser_controller" filename="libgazebo_ros_ray_sensor.so">
+                <ros> <!-- This is where integration with ROS begins -->
+                    <!-- The scan topic receives information from the sensor -->
+                    <argument>~/out:=scan</argument>
+                </ros>
+                <!-- Type of message the sensor sends to the ROS -->
+                <output_type>sensor_msgs/LaserScan</output_type>
+                <frame_name>laser_frame</frame_name>
+            </plugin>
+        </sensor>
+    </gazebo>
+</robot>
