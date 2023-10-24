@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Definindo o nome do elemento responsável pelo controle no Gazebo -->
+    <ros2_control name="GazeboSystem" type="system">
+        <!-- Aqui define-se o nome dos plugins que lidarão com o controle do hardware no Gazebo -->
+        <hardware>
+            <plugin>gazebo_ros2_control/GazeboSystem</plugin> <!-- Esse é o plugin responsável por conectar-se ao Gazebo e controlar os componentes do robô -->
+        </hardware>
+        <!-- Elemento que será controlado e monitorado -->
+        <joint name="left_wheel_joint">
+            <!-- Interface usada pelo controlador para enviar comandos do nome especificado para a junta e defini os limites -->
+            <command_interface name="velocity">
+                <param name="min">-10</param>
+                <param name="max">10</param>
+            </command_interface>
+            <!-- Aqui são informados os estado ou propriedades da junta que deseja-se monitorar -->
+            <state_interface name="velocity" />
+            <state_interface name="position" />
+        </joint>
+        <joint name="right_wheel_joint">
+            <command_interface name="velocity">
+                <param name="min">-10</param>
+                <param name="max">10</param>
+            </command_interface>
+            <state_interface name="velocity" />
+            <state_interface name="position" />
+        </joint>
+    </ros2_control>
+    <!-- Aqui são definidas as configurações utilizadas no Gazebo -->
+    <gazebo>
+        <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so"> <!-- Aqui o plugin é criado para conectar-se ao ros2_control e garantir que os controles definidos sejam usados no Gazebo -->
+            <parameters>$(find roomba_bot)/config/my_controllers.yaml</parameters> <!-- Aqui é definido o arquivo de configuração do ROS2-CONTROL -->
+        </plugin>
+    </gazebo>
+</robot>
