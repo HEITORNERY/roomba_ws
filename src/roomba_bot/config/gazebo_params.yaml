@@ -1,0 +1,3 @@
+gazebo: # Nó do GAZEBO 
+  ros__parameters: # A nova taxa de atualização do movimento do robô no Gazebo
+    publish_rate: 400.0
