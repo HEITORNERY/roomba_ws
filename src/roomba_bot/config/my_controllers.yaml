@@ -18,8 +18,8 @@ diff_cont:
 
     left_wheel_names: ["left_wheel_joint"] # Nome da junta que controla a roda esquerda
     right_wheel_names: ["right_wheel_joint"] # Nome da junta que controla a roda direita
-    wheel_separation: 0.35 # Separção entre as rodas
-    wheel_radius: 0.05 # Raio das rodas
+    wheel_separation: 0.235 # Separção entre as rodas
+    wheel_radius: 0.036 # Raio das rodas
 
     use_stamped_vel: false # As velocidades comandadas não precisam de um carimbo de data/hora, ou seja, os comandos de velocidade são tratados como velocidades constantes
 
