@@ -27,6 +27,16 @@
 
     </link>
 
+    <!-- Creating the joint to base_footprint-->
+    <joint name="base_footprint_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="base_footprint"/>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <!-- Creating the link to base_footprint-->
+    <link name="base_footprint"/>
+
     <!-- Creating one joint for the unite the base_link to the chassis_link -->
     <joint name="chassis_joint" type="fixed">
         <parent link="base_link" />
